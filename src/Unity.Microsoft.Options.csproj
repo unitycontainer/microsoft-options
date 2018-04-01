@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\package.props" />
+
+  <PropertyGroup>
+    <FileVersion>$(Version).0</FileVersion>
+    <AssemblyVersion>$(Version).0</AssemblyVersion>
+    <PackageId>Unity.Microsoft.Options</PackageId>
+    <Description>Unity for Microsoft Options framework.</Description>
+    <Copyright>Copyright © Unity Open Source Project 2018</Copyright>
+    <PackageProjectUrl>https://github.com/unitycontainer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/unitycontainer/microsoft-options</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/unitycontainer/microsoft-options/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://avatars1.githubusercontent.com/u/12849707</PackageIconUrl>
+    <PackageTags>Unity Container unitycontainer Microsoft.Practices.Unity IoC Options</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <Authors>Unity Open Source Project</Authors>
+    <Company>Unity Open Source Project</Company>
+    <UnityAbstractions>..\..\Abstractions\src\Unity.Abstractions.csproj</UnityAbstractions>
+    <UnityContainer>..\..\Container\src\Unity.Container.csproj</UnityContainer>
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFrameworks>netcoreapp1.1;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+
+  <ItemGroup Condition="Exists('$(UnityAbstractions)')">
+    <ProjectReference Include="$(UnityAbstractions)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="Exists('$(UnityContainer)')">
+    <ProjectReference Include="$(UnityContainer)" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' == 'netcoreapp1.1' ">
+    <PackageReference Include="Microsoft.Extensions.Options" Version="1.1.2" /> 
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.*" /> 
+  </ItemGroup>
+
+
+  <ItemGroup Condition="!Exists('$(UnityAbstractions)')">
+    <PackageReference Include="Unity.Abstractions" Version="$(UnityAbstractionsVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!Exists('$(UnityContainer)')">
+    <PackageReference Include="Unity.Container" Version="$(UnityContainerVersion)" />      
+  </ItemGroup>
+
+</Project>
