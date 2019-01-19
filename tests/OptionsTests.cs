@@ -1,6 +1,9 @@
-﻿namespace Unity.Microsoft.Options.Tests
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Unity.Microsoft.Options.Tests
 {
-    public class Tests
+    [TestClass]
+    public class OptionTests
     {
     }
 }
