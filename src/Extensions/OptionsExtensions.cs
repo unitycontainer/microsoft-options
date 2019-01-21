@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using MEO = Microsoft.Extensions.Options.Options;
 
-namespace Unity.Microsoft.Options
+namespace Unity
 {
     /// <summary>
     /// Extension methods for adding options services to the DI container.
@@ -46,7 +46,7 @@ namespace Unity.Microsoft.Options
             }
 
             var value = new ConfigureNamedOptions<TOptions>(name, configureOptions);
-            container.RegisterInstance<IConfigureOptions<TOptions>>(value);
+            container.RegisterInstance<IConfigureOptions<TOptions>>(Guid.NewGuid().ToString(), value);
             return container;
         }
 
@@ -93,7 +93,7 @@ namespace Unity.Microsoft.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            container.RegisterInstance<IPostConfigureOptions<TOptions>>(new PostConfigureOptions<TOptions>(name, configureOptions));
+            container.RegisterInstance<IPostConfigureOptions<TOptions>>(Guid.NewGuid().ToString(), new PostConfigureOptions<TOptions>(name, configureOptions));
             return container;
         }
 
@@ -147,7 +147,7 @@ namespace Unity.Microsoft.Options
             var serviceTypes = FindIConfigureOptions(configureType);
             foreach (var serviceType in serviceTypes)
             {
-                container.RegisterType(serviceType, configureType);
+                container.RegisterType(serviceType, configureType, Guid.NewGuid().ToString());
             }
             return container;
         }
@@ -163,7 +163,7 @@ namespace Unity.Microsoft.Options
             var serviceTypes = FindIConfigureOptions(configureInstance.GetType());
             foreach (var serviceType in serviceTypes)
             {
-                container.RegisterInstance(serviceType, configureInstance);
+                container.RegisterInstance(serviceType, Guid.NewGuid().ToString(), configureInstance);
             }
             return container;
         }

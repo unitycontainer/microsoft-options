@@ -1,8 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using Unity;
+using Unity.Microsoft.Options;
 
-namespace Unity.Microsoft.Options.Tests.OptionTests
+namespace Tests.OptionTests
 {
     [TestClass]
     public partial class OptionTests
@@ -16,6 +20,106 @@ namespace Unity.Microsoft.Options.Tests.OptionTests
             Container = new UnityContainer()
                 .AddExtension(new OptionsExtension())
                 .AddExtension(new Diagnostic());
+        }
+
+        public static IEnumerable<object[]> Configure_GetsNullableOptionsFromConfiguration_Data
+        {
+            get
+            {
+                yield return new object[]
+                {
+                    new Dictionary<string, string>
+                    {
+                        { nameof(NullableOptions.MyNullableBool), "true" },
+                        { nameof(NullableOptions.MyNullableInt), "1" },
+                        { nameof(NullableOptions.MyNullableDateTime),
+                            new DateTime(2015, 1, 1)
+                                .ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern) }
+                    },
+                    new Dictionary<string, object>
+                    {
+                        { nameof(NullableOptions.MyNullableBool), true },
+                        { nameof(NullableOptions.MyNullableInt), 1 },
+                        { nameof(NullableOptions.MyNullableDateTime),
+                            new DateTime(2015, 1, 1) }
+                    }
+                };
+                yield return new object[]
+                {
+                    new Dictionary<string, string>
+                    {
+                        { nameof(NullableOptions.MyNullableBool), "false" },
+                        { nameof(NullableOptions.MyNullableInt), "-1" },
+                        { nameof(NullableOptions.MyNullableDateTime),
+                            new DateTime(1995, 12, 31)
+                                .ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern) }
+                    },
+                    new Dictionary<string, object>
+                    {
+                        { nameof(NullableOptions.MyNullableBool), false },
+                        { nameof(NullableOptions.MyNullableInt), -1 },
+                        { nameof(NullableOptions.MyNullableDateTime),
+                            new DateTime(1995, 12, 31) }
+                    }
+                };
+                yield return new object[]
+                {
+                    new Dictionary<string, string>
+                    {
+                        { nameof(NullableOptions.MyNullableBool), null },
+                        { nameof(NullableOptions.MyNullableInt), null },
+                        { nameof(NullableOptions.MyNullableDateTime), null }
+                    },
+                    new Dictionary<string, object>
+                    {
+                        { nameof(NullableOptions.MyNullableBool), null },
+                        { nameof(NullableOptions.MyNullableInt), null },
+                        { nameof(NullableOptions.MyNullableDateTime), null }
+                    }
+                };
+            }
+        }
+
+        public static IEnumerable<object[]> Configure_GetsEnumOptionsFromConfiguration_Data
+        {
+            get
+            {
+                yield return new object[]
+                {
+                    new Dictionary<string, string>
+                    {
+                        { nameof(EnumOptions.UriKind), (UriKind.Absolute).ToString() },
+                    },
+                    new Dictionary<string, object>
+                    {
+                        { nameof(EnumOptions.UriKind), UriKind.Absolute },
+                    }
+                };
+
+                yield return new object[]
+                {
+                    new Dictionary<string, string>
+                    {
+                        { nameof(EnumOptions.UriKind), ((int)UriKind.Absolute).ToString() },
+                    },
+                    new Dictionary<string, object>
+                    {
+                        { nameof(EnumOptions.UriKind), UriKind.Absolute },
+                    }
+                };
+
+                yield return new object[]
+                {
+                    new Dictionary<string, string>
+                    {
+                        { nameof(EnumOptions.UriKind), null },
+                    },
+                    new Dictionary<string, object>
+                    {
+                        { nameof(EnumOptions.UriKind), UriKind.RelativeOrAbsolute },  //default enum, since not overridden by configuration
+                    }
+                };
+            }
         }
 
     }
