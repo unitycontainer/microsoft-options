@@ -7,7 +7,7 @@
     <AssemblyVersion>$(Version).0</AssemblyVersion>
     <PackageId>Unity.Microsoft.Options</PackageId>
     <Description>Unity for Microsoft Options framework.</Description>
-    <Copyright>Copyright © Unity Container Project 2018</Copyright>
+    <Copyright>Copyright © .NET Foundation and Contributors. All Rights Reserved</Copyright>
     <PackageProjectUrl>https://github.com/unitycontainer</PackageProjectUrl>
     <RepositoryUrl>https://github.com/unitycontainer/microsoft-options</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/unitycontainer/microsoft-options/blob/master/LICENSE</PackageLicenseUrl>
